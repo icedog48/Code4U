@@ -1,0 +1,49 @@
+﻿@using System
+@using System.Collections.Generic
+@using System.Linq
+@using System.Text
+@using System.IO
+@using RazorEngine
+@using RazorEngine.Templating
+@using DatabaseSchemaReader
+@using DatabaseSchemaReader.DataSchema
+
+@model DatabaseSchemaReader.DataSchema.DatabaseSchema
+
+@{ 
+    var files = Directory.GetFiles(ViewBag.TemplateFolder, "*__NAME__*.cshtml", SearchOption.AllDirectories);
+
+    try
+    {
+
+        foreach (var table in Model.Tables)
+        {
+            foreach (var filename in files)
+            {
+                var generatedCode = Code4U.WinForm.Helpers.RazorEngineHelper.GetGeneratedCode(filename, table);
+
+                //var generatedCode = Engine.Razor.RunCompile(filename, typeof(DatabaseTable), table);
+
+                var generatedFileName = filename.Replace(ViewBag.TemplateFolder + "\\", string.Empty)
+                                        .Replace("__NAME__", table.Name)
+                                        .Replace(".cshtml", string.Empty);
+
+                generatedFileName = Path.Combine(ViewBag.GeneratedCodeFolder, generatedFileName);
+
+                var generationDirectory = Path.GetDirectoryName(generatedFileName);
+
+                if (!Directory.Exists(generationDirectory))
+                {
+                    Directory.CreateDirectory(generationDirectory);
+                }
+
+                File.WriteAllText(generatedFileName, generatedCode);
+            }
+        }
+    }
+    catch (Exception)
+    {
+
+        throw;
+    }
+}
