@@ -1,1 +1,13 @@
-﻿public virtual @Model.DataType.NetDataType @Model.Name { get; set; }
+﻿@using System
+@using System.Collections.Generic
+@using System.Linq
+@using System.Text
+@using System.IO
+@using RazorEngine
+@using RazorEngine.Templating
+@using DatabaseSchemaReader
+@using DatabaseSchemaReader.DataSchema
+
+@inherits RazorEngine.Templating.Code4UTemplateBase< DatabaseSchemaReader.DataSchema.DatabaseColumn >
+
+public virtual @Model.DataType.NetDataType @Model.Name { get; set; }

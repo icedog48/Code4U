@@ -13,16 +13,24 @@ using RazorEngine.Templating;
 using DatabaseSchemaReader.DataSchema;
 using RazorEngine.Configuration;
 using System.IO;
+using System.Reflection;
+using Code4U.Helpers;
+using MediatR;
+using Code4U.Commands;
 
 namespace Code4U.WinForm
 {
     public partial class FrmPrincipal : Form
     {
-        public FrmPrincipal()
+        private readonly IMediator mediator;
+
+        public FrmPrincipal(IMediator mediator)
         {
+            this.mediator = mediator;
+
             InitializeComponent();
 
-            //TODO: Carregar de arquivo
+            //TODO: Carregar de um arquivo de config. Permitir salvar tb.
 
             var codePath = System.AppDomain.CurrentDomain.BaseDirectory;
 
@@ -36,61 +44,15 @@ namespace Code4U.WinForm
 
         private void btnGenerateCode_Click(object sender, EventArgs e)
         {
-            //TODO: Transferir todo o codigo desse metodo para um serviço em outra DLL
-            //TODO: Descobrir como adicionar uma dll para a compilação dos templates, Verificar o Assembly.LoadFrom("MyNice.dll"); e o 
-            
-            var folders = DirSearch(txtTemplateFolder.Text);
-
-            var config = new TemplateServiceConfiguration()
+            mediator.Send(new RunDatabaseSchemaTemplate()
             {
-                Debug = true,
-                Language = Language.CSharp,
-                TemplateManager = new ResolvePathTemplateManager(folders)
-            };
-            
-            var service = RazorEngineService.Create(config);
-            
-            Engine.Razor = service;
-
-            var server = txtServer.Text;
-            var database = txtDatabase.Text;
-            var user = txtUser.Text;
-            var password = txtPassword.Text;
-
-            var connectionString = $"Server={server};Database={database};User Id={user};Password={password};";
-
-            var dbReader = new DatabaseReader(connectionString, "System.Data.SqlClient");
-
-            var schema = dbReader.ReadAll();
-
-            try
-            {
-                var viewBag = new DynamicViewBag();
-                viewBag.AddValue("TemplateFolder", txtTemplateFolder.Text);
-                viewBag.AddValue("GeneratedCodeFolder", txtGeneratedCodeFolder.Text);
-
-                var templateFileName = Path.Combine(txtTemplateFolder.Text, "Index.cshtml");
-
-                Engine.Razor.RunCompile(templateFileName, typeof(DatabaseSchema), schema, viewBag);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Deu ruim.: " + ex.Message);
-            }
-        }
-
-        public static IList<string> DirSearch(string baseDir)
-        {
-            var directories = new List<string>();
-
-            directories.Add(baseDir);
-
-            foreach (var directory in Directory.GetDirectories(baseDir))
-            {
-                directories.AddRange(DirSearch(directory));
-            }
-
-            return directories;
+                TemplateFolder = txtTemplateFolder.Text,
+                GeneratedCodeFolder = txtGeneratedCodeFolder.Text,
+                Server = txtServer.Text,
+                Database = txtDatabase.Text,
+                User = txtUser.Text,
+                Password = txtPassword.Text
+            });
         }
     }
 }
