@@ -5,31 +5,12 @@
 @using System.IO
 @using RazorEngine
 @using RazorEngine.Templating
-@using DatabaseSchemaReader
-@using DatabaseSchemaReader.DataSchema
+@using Code4U.Models
 
-@inherits RazorEngine.Templating.Code4UTemplateBase<DatabaseSchemaReader.DataSchema.DatabaseSchema>
+@inherits RazorEngine.Templating.Code4UTemplateBase<Project>
 
-@{ 
-    var filename = Path.Combine(ViewBag.TemplateFolder, @"Models\__NAME__.cs.cshtml"); 
+@Include(@"Models\Index.cshtml", Model, typeof(Project))
 
-    foreach (var table in Model.Tables)
-    {
-        var generatedCode = Include(filename, table, typeof(DatabaseTable)).ToString();
+@Include(@"Mappings\Index.cshtml", Model, typeof(Project))
 
-        var generatedFileName = filename.Replace(ViewBag.TemplateFolder + "\\", string.Empty)
-                                        .Replace("__NAME__", table.Name)
-                                        .Replace(".cshtml", string.Empty);
-
-        generatedFileName = Path.Combine(ViewBag.GeneratedCodeFolder, generatedFileName);
-
-        var generationDirectory = Path.GetDirectoryName(generatedFileName);
-
-        if (!Directory.Exists(generationDirectory))
-        {
-            Directory.CreateDirectory(generationDirectory);
-        }
-
-        File.WriteAllText(generatedFileName, generatedCode);
-    }
-}
+@Include(@"Migrations\Index.cshtml", Model, typeof(Project))

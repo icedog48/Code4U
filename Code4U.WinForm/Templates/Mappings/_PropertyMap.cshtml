@@ -9,4 +9,15 @@
 
 @inherits RazorEngine.Templating.Code4UTemplateBase<Property>
 
-public virtual @Model.Type @Model.Name { get; set; }
+@if (Model.PrimaryKey)
+{
+@:Id(x => x.@Model.Name);
+}
+else if (Model.IsComplexType)
+{
+@:References(x => x.@Model.Name);
+}
+else
+{
+@:Map(x => x.@Model.Name);
+}

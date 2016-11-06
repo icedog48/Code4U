@@ -12,14 +12,17 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Models
+namespace Mappings
 {
-    public class @Model.Name
+    public class @(Model.Name)Map : ClassMap<@Model.Name>
     {
-    @foreach (var property in @Model.Properties)
-    {
-        @:@IncludeInLine("_Property.cshtml", property, typeof(Property))
-        @:
-    }
+        public @(Model.Name)Map()
+        {
+        @foreach (var property in Model.Properties)
+        {
+            @:@IncludeInLine("_PropertyMap.cshtml", property, typeof(Property))
+            @:
+        }
+        }
     }
 }

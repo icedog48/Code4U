@@ -1,10 +1,12 @@
 ﻿using Code4U.Helpers;
+using Code4U.Models;
 using DatabaseSchemaReader;
 using DatabaseSchemaReader.DataSchema;
 using MediatR;
 using RazorEngine;
 using RazorEngine.Configuration;
 using RazorEngine.Templating;
+using RazorEngine.Text;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -35,7 +37,7 @@ namespace Code4U.Commands
         {
             ConfigureRazorEngine(FileSystemHelper.GetDirectories(message.TemplateFolder));
 
-            var schema = ReadDatabaseSchema(message);
+            var project = ReadDatabaseSchema(message);
 
             var viewBag = new DynamicViewBag();
             viewBag.AddValue("TemplateFolder", message.TemplateFolder);
@@ -43,16 +45,57 @@ namespace Code4U.Commands
 
             var templateFileName = Path.Combine(message.TemplateFolder, "Index.cshtml");
 
-            return Engine.Razor.RunCompile(templateFileName, typeof(DatabaseSchema), schema, viewBag);
+            return Engine.Razor.RunCompile(templateFileName, typeof(Project), project, viewBag);
         }
 
-        private DatabaseSchema ReadDatabaseSchema(RunDatabaseSchemaTemplate message)
+        private Project ReadDatabaseSchema(RunDatabaseSchemaTemplate message)
         {
             var connectionString = $"Server={message.Server};Database={message.Database};User Id={message.User};Password={message.Password};";
 
             var dbReader = new DatabaseReader(connectionString, "System.Data.SqlClient");
+
+            var schema = dbReader.ReadAll();
+
+            var project = new Project()
+            {
+                Entities = GetEntities(schema),
+                GeneratedCodeFolder = message.GeneratedCodeFolder,
+                TemplateFolder = message.TemplateFolder,
+                DatabaseSchema = schema
+            };
             
-            return dbReader.ReadAll();
+            return project;
+        }
+
+        private IEnumerable<Entity> GetEntities(DatabaseSchema schema)
+        {
+            var entities = new List<Entity>();
+
+            foreach (var table in schema.Tables)
+            {
+                var entity = new Entity()
+                {
+                    Name = table.Name,
+                    Properties = GetProperties(table),
+                    DbTable = table
+                };
+                
+                entities.Add(entity);
+            }
+
+            return entities;
+        }
+
+        private IEnumerable<Property> GetProperties(DatabaseTable table)
+        {
+            var properties = new List<Property>();
+
+            foreach (var column in table.Columns)
+            {
+                properties.Add(new Property(column));
+            }
+
+            return properties;
         }
 
         private void ConfigureRazorEngine(string[] templateFolders)
@@ -61,7 +104,8 @@ namespace Code4U.Commands
             {
                 Debug = true,
                 Language = Language.CSharp,
-                TemplateManager = new ResolvePathTemplateManager(templateFolders)
+                TemplateManager = new ResolvePathTemplateManager(templateFolders),
+                EncodedStringFactory = new RawStringFactory()
             };
 
             var service = RazorEngineService.Create(config);

@@ -1,0 +1,31 @@
+﻿@using System
+@using System.Collections.Generic
+@using System.Linq
+@using System.Text
+@using System.IO
+@using RazorEngine
+@using RazorEngine.Templating
+@using Code4U.Models
+
+@inherits RazorEngine.Templating.Code4UTemplateBase<Project>
+
+@{ 
+    var filename = Path.Combine(ViewBag.TemplateFolder, @"Migrations\_Migrations.cs.cshtml");
+
+    var generatedCode = Include(filename, Model, typeof(Project)).ToString();
+
+    var generatedFileName = filename.Replace(ViewBag.TemplateFolder + "\\", string.Empty)
+                                    .Replace("_Migrations", Model.Name + "Migrations")
+                                    .Replace(".cshtml", string.Empty);
+
+    generatedFileName = Path.Combine(ViewBag.GeneratedCodeFolder, generatedFileName);
+
+    var generationDirectory = Path.GetDirectoryName(generatedFileName);
+
+    if (!Directory.Exists(generationDirectory))
+    {
+        Directory.CreateDirectory(generationDirectory);
+    }
+
+    File.WriteAllText(generatedFileName, generatedCode);
+}
