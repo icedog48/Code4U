@@ -6,29 +6,23 @@
 @using RazorEngine
 @using RazorEngine.Templating
 @using Code4U.Models
+@using Code4U.Helpers
 
 @inherits RazorEngine.Templating.Code4UTemplateBase<Project>
 
 @{ 
-    var filename = Path.Combine(ViewBag.TemplateFolder, @"Models\__NAME__.cs.cshtml");
+    var filename = Path.Combine(Model.TemplateFolder, @"Models\__NAME__.cs.cshtml");
 
     foreach (var entity in Model.Entities)
     {
         var generatedCode = Include(filename, entity, typeof(Entity)).ToString();
 
-        var generatedFileName = filename.Replace(ViewBag.TemplateFolder + "\\", string.Empty)
+        var generatedFileName = filename.Replace(Model.TemplateFolder + "\\", string.Empty)
                                         .Replace("__NAME__", entity.Name)
                                         .Replace(".cshtml", string.Empty);
 
-        generatedFileName = Path.Combine(ViewBag.GeneratedCodeFolder, generatedFileName);
+        generatedFileName = Path.Combine(Model.GeneratedCodeFolder, generatedFileName);
 
-        var generationDirectory = Path.GetDirectoryName(generatedFileName);
-
-        if (!Directory.Exists(generationDirectory))
-        {
-            Directory.CreateDirectory(generationDirectory);
-        }
-
-        File.WriteAllText(generatedFileName, generatedCode);
+        FileSystemHelper.WriteFile(generatedFileName, generatedCode);
     }
 }

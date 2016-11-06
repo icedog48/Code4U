@@ -6,6 +6,7 @@
 @using RazorEngine
 @using RazorEngine.Templating
 @using Code4U.Models
+@using Code4U.Helpers
 
 @inherits RazorEngine.Templating.Code4UTemplateBase<Project>
 
@@ -20,12 +21,5 @@
 
     generatedFileName = Path.Combine(ViewBag.GeneratedCodeFolder, generatedFileName);
 
-    var generationDirectory = Path.GetDirectoryName(generatedFileName);
-
-    if (!Directory.Exists(generationDirectory))
-    {
-        Directory.CreateDirectory(generationDirectory);
-    }
-
-    File.WriteAllText(generatedFileName, generatedCode);
+    FileSystemHelper.WriteFile(generatedFileName, generatedCode);
 }
