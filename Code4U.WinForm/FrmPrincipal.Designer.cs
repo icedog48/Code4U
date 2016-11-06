@@ -42,13 +42,15 @@
             this.btnGenerateCode = new System.Windows.Forms.Button();
             this.txtGeneratedCodeFolder = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
+            this.txtProjectName = new System.Windows.Forms.TextBox();
+            this.label7 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 21);
+            this.label1.Location = new System.Drawing.Point(9, 47);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(90, 13);
             this.label1.TabIndex = 0;
@@ -56,7 +58,7 @@
             // 
             // txtTemplateFolder
             // 
-            this.txtTemplateFolder.Location = new System.Drawing.Point(106, 18);
+            this.txtTemplateFolder.Location = new System.Drawing.Point(103, 44);
             this.txtTemplateFolder.Name = "txtTemplateFolder";
             this.txtTemplateFolder.Size = new System.Drawing.Size(269, 20);
             this.txtTemplateFolder.TabIndex = 1;
@@ -71,16 +73,16 @@
             this.groupBox1.Controls.Add(this.label3);
             this.groupBox1.Controls.Add(this.txtServer);
             this.groupBox1.Controls.Add(this.label2);
-            this.groupBox1.Location = new System.Drawing.Point(18, 56);
+            this.groupBox1.Location = new System.Drawing.Point(15, 82);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(360, 142);
+            this.groupBox1.Size = new System.Drawing.Size(360, 135);
             this.groupBox1.TabIndex = 2;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Connection String";
             // 
             // txtPassword
             // 
-            this.txtPassword.Location = new System.Drawing.Point(63, 100);
+            this.txtPassword.Location = new System.Drawing.Point(63, 99);
             this.txtPassword.Name = "txtPassword";
             this.txtPassword.PasswordChar = '*';
             this.txtPassword.Size = new System.Drawing.Size(281, 20);
@@ -89,7 +91,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(6, 103);
+            this.label5.Location = new System.Drawing.Point(6, 102);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(53, 13);
             this.label5.TabIndex = 7;
@@ -97,7 +99,7 @@
             // 
             // txtUser
             // 
-            this.txtUser.Location = new System.Drawing.Point(63, 74);
+            this.txtUser.Location = new System.Drawing.Point(63, 73);
             this.txtUser.Name = "txtUser";
             this.txtUser.Size = new System.Drawing.Size(281, 20);
             this.txtUser.TabIndex = 6;
@@ -105,7 +107,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(28, 77);
+            this.label4.Location = new System.Drawing.Point(28, 76);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(29, 13);
             this.label4.TabIndex = 5;
@@ -113,7 +115,7 @@
             // 
             // txtDatabase
             // 
-            this.txtDatabase.Location = new System.Drawing.Point(63, 48);
+            this.txtDatabase.Location = new System.Drawing.Point(63, 47);
             this.txtDatabase.Name = "txtDatabase";
             this.txtDatabase.Size = new System.Drawing.Size(281, 20);
             this.txtDatabase.TabIndex = 4;
@@ -121,7 +123,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(6, 51);
+            this.label3.Location = new System.Drawing.Point(6, 50);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(53, 13);
             this.label3.TabIndex = 3;
@@ -129,7 +131,7 @@
             // 
             // txtServer
             // 
-            this.txtServer.Location = new System.Drawing.Point(63, 22);
+            this.txtServer.Location = new System.Drawing.Point(63, 21);
             this.txtServer.Name = "txtServer";
             this.txtServer.Size = new System.Drawing.Size(281, 20);
             this.txtServer.TabIndex = 2;
@@ -137,7 +139,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(19, 25);
+            this.label2.Location = new System.Drawing.Point(19, 24);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(38, 13);
             this.label2.TabIndex = 1;
@@ -145,9 +147,9 @@
             // 
             // btnGenerateCode
             // 
-            this.btnGenerateCode.Location = new System.Drawing.Point(268, 248);
+            this.btnGenerateCode.Location = new System.Drawing.Point(265, 274);
             this.btnGenerateCode.Name = "btnGenerateCode";
-            this.btnGenerateCode.Size = new System.Drawing.Size(107, 27);
+            this.btnGenerateCode.Size = new System.Drawing.Size(107, 25);
             this.btnGenerateCode.TabIndex = 3;
             this.btnGenerateCode.Text = "Generate Code";
             this.btnGenerateCode.UseVisualStyleBackColor = true;
@@ -155,25 +157,43 @@
             // 
             // txtGeneratedCodeFolder
             // 
-            this.txtGeneratedCodeFolder.Location = new System.Drawing.Point(130, 210);
+            this.txtGeneratedCodeFolder.Location = new System.Drawing.Point(135, 236);
             this.txtGeneratedCodeFolder.Name = "txtGeneratedCodeFolder";
-            this.txtGeneratedCodeFolder.Size = new System.Drawing.Size(248, 20);
+            this.txtGeneratedCodeFolder.Size = new System.Drawing.Size(240, 20);
             this.txtGeneratedCodeFolder.TabIndex = 5;
             // 
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(15, 213);
+            this.label6.Location = new System.Drawing.Point(12, 239);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(117, 13);
             this.label6.TabIndex = 4;
             this.label6.Text = "Generated Code Folder";
             // 
+            // txtProjectName
+            // 
+            this.txtProjectName.Location = new System.Drawing.Point(103, 12);
+            this.txtProjectName.Name = "txtProjectName";
+            this.txtProjectName.Size = new System.Drawing.Size(269, 20);
+            this.txtProjectName.TabIndex = 7;
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(57, 12);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(40, 13);
+            this.label7.TabIndex = 6;
+            this.label7.Text = "Project";
+            // 
             // FrmPrincipal
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(390, 287);
+            this.ClientSize = new System.Drawing.Size(390, 311);
+            this.Controls.Add(this.txtProjectName);
+            this.Controls.Add(this.label7);
             this.Controls.Add(this.txtGeneratedCodeFolder);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.btnGenerateCode);
@@ -205,6 +225,8 @@
         private System.Windows.Forms.Button btnGenerateCode;
         private System.Windows.Forms.TextBox txtGeneratedCodeFolder;
         private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.TextBox txtProjectName;
+        private System.Windows.Forms.Label label7;
     }
 }
 

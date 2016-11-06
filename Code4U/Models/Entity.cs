@@ -13,6 +13,11 @@ namespace Code4U.Models
 
         public IEnumerable<Property> Properties { get; set; }
 
-        public DatabaseTable DbTable { get; set; }
+        public bool IsLastProperty(Property property)
+        {
+            var lastProperty = this.Properties.Last();
+
+            return property == lastProperty;
+        }
     }
 }

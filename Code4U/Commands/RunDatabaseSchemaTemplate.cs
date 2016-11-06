@@ -18,6 +18,8 @@ namespace Code4U.Commands
 {
     public class RunDatabaseSchemaTemplate : IRequest<string>
     {
+        public string ProjectName { get; set; }
+
         public string TemplateFolder { get; set; }
 
         public string GeneratedCodeFolder { get; set; }
@@ -58,10 +60,10 @@ namespace Code4U.Commands
 
             var project = new Project()
             {
+                Name = message.ProjectName,
                 Entities = GetEntities(schema),
                 GeneratedCodeFolder = message.GeneratedCodeFolder,
-                TemplateFolder = message.TemplateFolder,
-                DatabaseSchema = schema
+                TemplateFolder = message.TemplateFolder
             };
             
             return project;
@@ -76,8 +78,7 @@ namespace Code4U.Commands
                 var entity = new Entity()
                 {
                     Name = table.Name,
-                    Properties = GetProperties(table),
-                    DbTable = table
+                    Properties = GetProperties(table)
                 };
                 
                 entities.Add(entity);
@@ -92,7 +93,32 @@ namespace Code4U.Commands
 
             foreach (var column in table.Columns)
             {
-                properties.Add(new Property(column));
+                var property = new Property();
+
+                property.Name = column.Name;
+                if (column.IsForeignKey) property.Name = column.ForeignKeyTableName;
+
+                property.Type = column.DataType.NetDataTypeCSharpName;
+                if (column.IsForeignKey) property.Type = column.ForeignKeyTableName;
+
+                property.Size = column.Length;
+
+                property.Identity = column.IsAutoNumber;
+
+                property.IsPrimaryKey = column.IsPrimaryKey;
+
+                property.IsForeignKey = column.IsForeignKey;
+
+                property.IsNullable = column.Nullable;
+
+                if (column.IsUniqueKey)
+                {
+                    property.UniqueKeyName = $"UQ_{column.TableName}_{column.Name}";
+                }
+
+                property.DefaultValue = column.DefaultValue;
+
+                properties.Add(property);
             }
 
             return properties;

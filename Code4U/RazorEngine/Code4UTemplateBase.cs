@@ -11,7 +11,8 @@ namespace RazorEngine.Templating
     {
         public virtual string IncludeInLine(string name, object model, Type modelType)
         {
-            return this.Include(name, model, modelType).ToString().Replace(Environment.NewLine, string.Empty);
+            return this.Include(name, model, modelType).ToString().TrimStart(Environment.NewLine.ToCharArray())
+                                                                  .TrimEnd(Environment.NewLine.ToCharArray());
         }
     }
 }

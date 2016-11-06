@@ -105,6 +105,7 @@
     <None Include="Templates\Migrations\Index.cshtml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="Templates\Migrations\_CreateColumn.cshtml" />
     <None Include="Templates\Migrations\_Migrations.cs.cshtml" />
     <None Include="Templates\Migrations\_CreateTable.cshtml" />
     <None Include="Templates\Models\Index.cshtml">

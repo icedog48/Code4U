@@ -9,11 +9,11 @@
 
 @inherits RazorEngine.Templating.Code4UTemplateBase<Property>
 
-@if (Model.PrimaryKey)
+@if (Model.IsPrimaryKey)
 {
 @:Id(x => x.@Model.Name);
 }
-else if (Model.IsComplexType)
+else if (Model.IsForeignKey)
 {
 @:References(x => x.@Model.Name);
 }

@@ -21,9 +21,9 @@ namespace Migrations
     {
         public override void Up()
         {
-        @foreach (var table in Model.DatabaseSchema.Tables)
+        @foreach (var entity in Model.Entities)
         {
-            @:@IncludeInLine("_CreateTable.cshtml", table, typeof(DatabaseTable))
+            @:@IncludeInLine("_CreateTable.cshtml", entity, typeof(Entity))
             @:
         }
         }

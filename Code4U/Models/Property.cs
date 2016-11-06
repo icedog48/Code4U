@@ -9,57 +9,22 @@ namespace Code4U.Models
 {
     public class Property
     {
-        public DatabaseColumn DbColumn { get; set; }
+        public string Name { get; set; }
 
-        public Property(DatabaseColumn dbColummn)
-        {
-            this.DbColumn = dbColummn;
-        }
+        public string Type { get; set; }
 
-        public string Name
-        {
-            get
-            {
-                if (this.DbColumn.IsForeignKey) return this.DbColumn.ForeignKeyTableName;
+        public int? Size { get; set; }
 
-                return this.DbColumn.Name;
-            }
-        }
+        public bool Identity { get; set; }
 
-        public string Type
-        {
-            get
-            {
-                if (this.DbColumn.IsForeignKey) return this.DbColumn.ForeignKeyTableName;
+        public bool IsPrimaryKey { get; set; }
 
-                return this.DbColumn.DataType.NetDataTypeCSharpName;
-            }
-        }
+        public bool IsForeignKey { get; set; }
 
-        public int? Size { get { return this.DbColumn.Length; } }
+        public bool IsNullable { get; set; }
 
-        public bool Identity
-        {
-            get
-            {
-                return this.DbColumn.IsAutoNumber;
-            }
-        }
+        public string UniqueKeyName { get; set; }
 
-        public bool PrimaryKey
-        {
-            get
-            {
-                return this.DbColumn.IsPrimaryKey;
-            }
-        }
-
-        public bool IsComplexType
-        {
-            get
-            {
-                return this.DbColumn.IsForeignKey;
-            }
-        }
+        public string DefaultValue { get; set; }
     }
 }

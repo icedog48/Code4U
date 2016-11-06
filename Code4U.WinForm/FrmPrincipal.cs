@@ -34,6 +34,7 @@ namespace Code4U.WinForm
 
             var codePath = System.AppDomain.CurrentDomain.BaseDirectory;
 
+            txtProjectName.Text = "GeneratedApp";
             txtTemplateFolder.Text = Path.Combine(@"C:\Projetos\Lucian\Code4U\Code4U.WinForm", "Templates");
             txtGeneratedCodeFolder.Text = Path.Combine(codePath, "GeneratedCode");
             txtServer.Text = @"localhost\SQLExpress";
@@ -46,6 +47,7 @@ namespace Code4U.WinForm
         {
             mediator.Send(new RunDatabaseSchemaTemplate()
             {
+                ProjectName = txtProjectName.Text,
                 TemplateFolder = txtTemplateFolder.Text,
                 GeneratedCodeFolder = txtGeneratedCodeFolder.Text,
                 Server = txtServer.Text,

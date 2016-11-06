@@ -16,7 +16,5 @@ namespace Code4U.Models
         public string GeneratedCodeFolder { get; set; }
 
         public IEnumerable<Entity> Entities { get; set; }
-
-        public DatabaseSchema DatabaseSchema { get; set; }
     }
 }

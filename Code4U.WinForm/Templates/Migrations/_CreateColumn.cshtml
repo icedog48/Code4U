@@ -1,0 +1,75 @@
+﻿@using System
+@using System.Collections.Generic
+@using System.Linq
+@using System.Text
+@using System.IO
+@using RazorEngine
+@using RazorEngine.Templating
+@using Code4U.Models
+@using DatabaseSchemaReader
+@using DatabaseSchemaReader.DataSchema
+
+@inherits RazorEngine.Templating.Code4UTemplateBase<Property>
+@{ 
+    var columnName = Model.Name;
+    var foreignKeyMethod = string.Empty;
+
+    if (Model.IsForeignKey)
+    {
+        columnName += "Id";
+
+        foreignKeyMethod = ".ForeignKey(\"" + Model.Type + "\", \"Id\")";
+    }
+
+    var typeMethod = "AsInt32()";
+
+    if (Model.Type == "string")
+    {
+        typeMethod = "AsString(" + Model.Size + ")";
+    }
+    else if (Model.Type == "bool")
+    {
+        typeMethod = "AsBoolen()";
+    }
+    else if (Model.Type == "Datetime")
+    {
+        typeMethod = "AsDatetime()";
+    }
+
+    var nullableMethod = ".NotNullable()";
+
+    if (Model.IsNullable)
+    {
+        nullableMethod = ".Nullable()";
+    }
+
+    var primaryKeyMethod = string.Empty;
+
+    if (Model.IsPrimaryKey)
+    {
+        primaryKeyMethod = ".PrimaryKey()";
+        nullableMethod = string.Empty;
+    }
+
+    var identityMethod = string.Empty;
+
+    if (Model.Identity)
+    {
+        identityMethod = ".Identity()";
+    }
+
+    var uniqueMethod = string.Empty;
+
+    if (!string.IsNullOrEmpty(Model.UniqueKeyName))
+    {
+        uniqueMethod = ".Unique(\""+ Model.UniqueKeyName + "\")";
+    }
+
+    var defaultValueMethodMethod = string.Empty;
+
+    if (!string.IsNullOrEmpty(Model.DefaultValue))
+    {
+        defaultValueMethodMethod = ".WithDefaultValue(\"" + Model.DefaultValue + "\")";
+    }
+}
+            .WithColumn("@columnName").@(typeMethod)@(nullableMethod)@(primaryKeyMethod)@(identityMethod)@(foreignKeyMethod)@(uniqueMethod)@(defaultValueMethodMethod)

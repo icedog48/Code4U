@@ -8,6 +8,9 @@
 @using Code4U.Models
 @using DatabaseSchemaReader
 @using DatabaseSchemaReader.DataSchema
-
-@inherits RazorEngine.Templating.Code4UTemplateBase<DatabaseTable>
-Create.Table("@Model.Name");
+@inherits RazorEngine.Templating.Code4UTemplateBase<Entity>
+Create.Table("@Model.Name")
+@foreach (var property in Model.Properties)
+{
+	@:@(IncludeInLine("_CreateColumn.cshtml", property, typeof(Property)))@(Model.IsLastProperty(property) ? ";" : string.Empty)
+}
