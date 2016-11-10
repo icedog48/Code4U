@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 
 namespace Code4U.Commands
 {
-    public class RunDatabaseSchemaTemplate : IRequest<string>
+    public class GetModelFromDatabaseSchema : IRequest<Project>
     {
         public string ProjectName { get; set; }
 
@@ -33,24 +33,9 @@ namespace Code4U.Commands
         public string Password { get; set; }
     }
 
-    public class RunDatabaseSchemaTemplateHandler : IRequestHandler<RunDatabaseSchemaTemplate, string>
+    public class GetModelFromDatabaseSchemaHandler : IRequestHandler<GetModelFromDatabaseSchema, Project>
     {
-        public string Handle(RunDatabaseSchemaTemplate message)
-        {
-            ConfigureRazorEngine(FileSystemHelper.GetDirectories(message.TemplateFolder));
-
-            var project = ReadDatabaseSchema(message);
-
-            var viewBag = new DynamicViewBag();
-            viewBag.AddValue("TemplateFolder", message.TemplateFolder);
-            viewBag.AddValue("GeneratedCodeFolder", message.GeneratedCodeFolder);
-
-            var templateFileName = Path.Combine(message.TemplateFolder, "Index.cshtml");
-
-            return Engine.Razor.RunCompile(templateFileName, typeof(Project), project, viewBag);
-        }
-
-        private Project ReadDatabaseSchema(RunDatabaseSchemaTemplate message)
+        public Project Handle(GetModelFromDatabaseSchema message)
         {
             var connectionString = $"Server={message.Server};Database={message.Database};User Id={message.User};Password={message.Password};";
 
@@ -65,7 +50,7 @@ namespace Code4U.Commands
                 GeneratedCodeFolder = message.GeneratedCodeFolder,
                 TemplateFolder = message.TemplateFolder
             };
-            
+
             return project;
         }
 
@@ -122,21 +107,6 @@ namespace Code4U.Commands
             }
 
             return properties;
-        }
-
-        private void ConfigureRazorEngine(string[] templateFolders)
-        {
-            var config = new TemplateServiceConfiguration()
-            {
-                Debug = true,
-                Language = Language.CSharp,
-                TemplateManager = new ResolvePathTemplateManager(templateFolders),
-                EncodedStringFactory = new RawStringFactory()
-            };
-
-            var service = RazorEngineService.Create(config);
-
-            Engine.Razor = service;
         }
     }
 }

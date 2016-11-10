@@ -56,7 +56,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Commands\RunDatabaseSchemaTemplate.cs" />
+    <Compile Include="Commands\GetModelFromDatabaseSchema.cs" />
+    <Compile Include="Commands\RunTemplate.cs" />
     <Compile Include="Helpers\FileSystemHelper.cs" />
     <Compile Include="Models\Entity.cs" />
     <Compile Include="Models\Project.cs" />

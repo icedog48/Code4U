@@ -17,26 +17,22 @@ using System.Reflection;
 using Code4U.Helpers;
 using MediatR;
 using Code4U.Commands;
+using Code4U.Models;
 
 namespace Code4U.WinForm
 {
-    public partial class FrmPrincipal : Form
+    public partial class FrmDatabaseSchemaSettings : Form
     {
         private readonly IMediator mediator;
 
-        public FrmPrincipal(IMediator mediator)
+        public Project Model { get; set; }
+
+        public FrmDatabaseSchemaSettings(IMediator mediator)
         {
             this.mediator = mediator;
 
             InitializeComponent();
-
-            //TODO: Carregar de um arquivo de config. Permitir salvar tb.
-
-            var codePath = System.AppDomain.CurrentDomain.BaseDirectory;
-
-            txtProjectName.Text = "GeneratedApp";
-            txtTemplateFolder.Text = Path.Combine(@"C:\Projetos\Lucian\Code4U\Code4U.WinForm", "Templates");
-            txtGeneratedCodeFolder.Text = Path.Combine(codePath, "GeneratedCode");
+            
             txtServer.Text = @"localhost\SQLExpress";
             txtDatabase.Text = "MangaScrapper";
             txtUser.Text = @"sa";
@@ -45,16 +41,16 @@ namespace Code4U.WinForm
 
         private void btnGenerateCode_Click(object sender, EventArgs e)
         {
-            mediator.Send(new RunDatabaseSchemaTemplate()
+            this.Model = mediator.Send(new GetModelFromDatabaseSchema()
             {
-                ProjectName = txtProjectName.Text,
-                TemplateFolder = txtTemplateFolder.Text,
-                GeneratedCodeFolder = txtGeneratedCodeFolder.Text,
+                ProjectName = "<Project Name>",
                 Server = txtServer.Text,
                 Database = txtDatabase.Text,
                 User = txtUser.Text,
                 Password = txtPassword.Text
             });
+
+            this.Close();
         }
     }
 }

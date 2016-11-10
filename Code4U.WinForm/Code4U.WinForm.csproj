@@ -37,6 +37,10 @@
       <HintPath>..\packages\Autofac.4.2.0\lib\net45\Autofac.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="AutoMapper, Version=5.1.1.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoMapper.5.1.1\lib\net45\AutoMapper.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="DatabaseSchemaReader, Version=2.1.1.2, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\DatabaseSchemaReader.2.1.1\lib\net45\DatabaseSchemaReader.dll</HintPath>
       <Private>True</Private>
@@ -66,15 +70,26 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FrmPrincipal.cs">
+    <Compile Include="Automapper\AutoMapperConfiguration.cs" />
+    <Compile Include="Forms\Dialogs\FrmDatabaseSchemaSettings.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="FrmPrincipal.Designer.cs">
+    <Compile Include="Forms\Dialogs\FrmDatabaseSchemaSettings.Designer.cs">
+      <DependentUpon>FrmDatabaseSchemaSettings.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FrmPrincipal.cs" />
+    <Compile Include="Forms\FrmPrincipal.Designer.cs">
       <DependentUpon>FrmPrincipal.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\ViewModels\EntityViewModel.cs" />
+    <Compile Include="Forms\ViewModels\ProjectViewModel.cs" />
+    <Compile Include="Forms\ViewModels\PropertyViewModel.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="FrmPrincipal.resx">
+    <EmbeddedResource Include="Forms\Dialogs\FrmDatabaseSchemaSettings.resx">
+      <DependentUpon>FrmDatabaseSchemaSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FrmPrincipal.resx">
       <DependentUpon>FrmPrincipal.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -97,25 +112,6 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <None Include="Templates\Mappings\Index.cshtml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Templates\Mappings\_PropertyMap.cshtml" />
-    <None Include="Templates\Mappings\__NAME__Map.cs.cshtml" />
-    <None Include="Templates\Migrations\Index.cshtml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Templates\Migrations\_CreateColumn.cshtml" />
-    <None Include="Templates\Migrations\_Migrations.cs.cshtml" />
-    <None Include="Templates\Migrations\_CreateTable.cshtml" />
-    <None Include="Templates\Models\Index.cshtml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Templates\Index.cshtml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Templates\Models\_Property.cshtml" />
-    <None Include="Templates\Models\__NAME__.cs.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

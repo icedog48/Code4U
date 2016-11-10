@@ -1,6 +1,6 @@
 ﻿namespace Code4U.WinForm
 {
-    partial class FrmPrincipal
+    partial class FrmDatabaseSchemaSettings
     {
         /// <summary>
         /// Required designer variable.
@@ -28,8 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.label1 = new System.Windows.Forms.Label();
-            this.txtTemplateFolder = new System.Windows.Forms.TextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.txtPassword = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
@@ -40,28 +38,8 @@
             this.txtServer = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.btnGenerateCode = new System.Windows.Forms.Button();
-            this.txtGeneratedCodeFolder = new System.Windows.Forms.TextBox();
-            this.label6 = new System.Windows.Forms.Label();
-            this.txtProjectName = new System.Windows.Forms.TextBox();
-            this.label7 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(9, 47);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(90, 13);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "Template\'s Folder";
-            // 
-            // txtTemplateFolder
-            // 
-            this.txtTemplateFolder.Location = new System.Drawing.Point(103, 44);
-            this.txtTemplateFolder.Name = "txtTemplateFolder";
-            this.txtTemplateFolder.Size = new System.Drawing.Size(269, 20);
-            this.txtTemplateFolder.TabIndex = 1;
             // 
             // groupBox1
             // 
@@ -73,7 +51,7 @@
             this.groupBox1.Controls.Add(this.label3);
             this.groupBox1.Controls.Add(this.txtServer);
             this.groupBox1.Controls.Add(this.label2);
-            this.groupBox1.Location = new System.Drawing.Point(15, 82);
+            this.groupBox1.Location = new System.Drawing.Point(12, 12);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(360, 135);
             this.groupBox1.TabIndex = 2;
@@ -147,72 +125,32 @@
             // 
             // btnGenerateCode
             // 
-            this.btnGenerateCode.Location = new System.Drawing.Point(265, 274);
+            this.btnGenerateCode.Location = new System.Drawing.Point(265, 153);
             this.btnGenerateCode.Name = "btnGenerateCode";
             this.btnGenerateCode.Size = new System.Drawing.Size(107, 25);
             this.btnGenerateCode.TabIndex = 3;
-            this.btnGenerateCode.Text = "Generate Code";
+            this.btnGenerateCode.Text = "Ok";
             this.btnGenerateCode.UseVisualStyleBackColor = true;
             this.btnGenerateCode.Click += new System.EventHandler(this.btnGenerateCode_Click);
             // 
-            // txtGeneratedCodeFolder
-            // 
-            this.txtGeneratedCodeFolder.Location = new System.Drawing.Point(135, 236);
-            this.txtGeneratedCodeFolder.Name = "txtGeneratedCodeFolder";
-            this.txtGeneratedCodeFolder.Size = new System.Drawing.Size(240, 20);
-            this.txtGeneratedCodeFolder.TabIndex = 5;
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(12, 239);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(117, 13);
-            this.label6.TabIndex = 4;
-            this.label6.Text = "Generated Code Folder";
-            // 
-            // txtProjectName
-            // 
-            this.txtProjectName.Location = new System.Drawing.Point(103, 12);
-            this.txtProjectName.Name = "txtProjectName";
-            this.txtProjectName.Size = new System.Drawing.Size(269, 20);
-            this.txtProjectName.TabIndex = 7;
-            // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(57, 12);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(40, 13);
-            this.label7.TabIndex = 6;
-            this.label7.Text = "Project";
-            // 
-            // FrmPrincipal
+            // FrmDatabaseSchemaSettings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(390, 311);
-            this.Controls.Add(this.txtProjectName);
-            this.Controls.Add(this.label7);
-            this.Controls.Add(this.txtGeneratedCodeFolder);
-            this.Controls.Add(this.label6);
+            this.ClientSize = new System.Drawing.Size(383, 189);
             this.Controls.Add(this.btnGenerateCode);
             this.Controls.Add(this.groupBox1);
-            this.Controls.Add(this.txtTemplateFolder);
-            this.Controls.Add(this.label1);
-            this.Name = "FrmPrincipal";
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Name = "FrmDatabaseSchemaSettings";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Form1";
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
         #endregion
-
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox txtTemplateFolder;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.TextBox txtPassword;
         private System.Windows.Forms.Label label5;
@@ -223,10 +161,6 @@
         private System.Windows.Forms.TextBox txtServer;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button btnGenerateCode;
-        private System.Windows.Forms.TextBox txtGeneratedCodeFolder;
-        private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.TextBox txtProjectName;
-        private System.Windows.Forms.Label label7;
     }
 }
 
