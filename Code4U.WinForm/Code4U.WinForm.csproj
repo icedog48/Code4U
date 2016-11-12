@@ -49,6 +49,10 @@
       <HintPath>..\packages\MediatR.2.1.0\lib\net45\MediatR.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="RazorEngine, Version=3.9.1.0, Culture=neutral, PublicKeyToken=9ee697374c7e744a, processorArchitecture=MSIL">
       <HintPath>..\packages\RazorEngine.3.9.1\lib\net45\RazorEngine.dll</HintPath>
       <Private>True</Private>
@@ -71,23 +75,35 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Automapper\AutoMapperConfiguration.cs" />
-    <Compile Include="Forms\Dialogs\FrmDatabaseSchemaSettings.cs">
+    <Compile Include="Forms\Dialogs\FrmGetModelFromAssemblySettings.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\Dialogs\FrmDatabaseSchemaSettings.Designer.cs">
-      <DependentUpon>FrmDatabaseSchemaSettings.cs</DependentUpon>
+    <Compile Include="Forms\Dialogs\FrmGetModelFromAssemblySettings.Designer.cs">
+      <DependentUpon>FrmGetModelFromAssemblySettings.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\FrmPrincipal.cs" />
+    <Compile Include="Forms\Dialogs\FrmGetModelFromDatabaseSchemaSettings.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Dialogs\FrmGetModelFromDatabaseSchemaSettings.Designer.cs">
+      <DependentUpon>FrmGetModelFromDatabaseSchemaSettings.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FrmPrincipal.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Forms\FrmPrincipal.Designer.cs">
       <DependentUpon>FrmPrincipal.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\ViewModels\Converters\StringListConverter.cs" />
     <Compile Include="Forms\ViewModels\EntityViewModel.cs" />
     <Compile Include="Forms\ViewModels\ProjectViewModel.cs" />
     <Compile Include="Forms\ViewModels\PropertyViewModel.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="Forms\Dialogs\FrmDatabaseSchemaSettings.resx">
-      <DependentUpon>FrmDatabaseSchemaSettings.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\Dialogs\FrmGetModelFromAssemblySettings.resx">
+      <DependentUpon>FrmGetModelFromAssemblySettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Dialogs\FrmGetModelFromDatabaseSchemaSettings.resx">
+      <DependentUpon>FrmGetModelFromDatabaseSchemaSettings.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\FrmPrincipal.resx">
       <DependentUpon>FrmPrincipal.cs</DependentUpon>
@@ -112,6 +128,17 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <None Include="Templates\Index.cshtml" />
+    <None Include="Templates\Mappings\Index.cshtml" />
+    <None Include="Templates\Mappings\_PropertyMap.cshtml" />
+    <None Include="Templates\Mappings\__NAME__Map.cs.cshtml" />
+    <None Include="Templates\Migrations\Index.cshtml" />
+    <None Include="Templates\Migrations\_CreateColumn.cshtml" />
+    <None Include="Templates\Migrations\_CreateTable.cshtml" />
+    <None Include="Templates\Migrations\_Migrations.cs.cshtml" />
+    <None Include="Templates\Models\Index.cshtml" />
+    <None Include="Templates\Models\_Property.cshtml" />
+    <None Include="Templates\Models\__NAME__.cs.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

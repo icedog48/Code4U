@@ -1,11 +1,15 @@
 ﻿using AutoMapper;
+using Code4U.Commands;
 using Code4U.Models;
 using Code4U.WinForm.Forms.ViewModels;
+using MediatR;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,38 +17,32 @@ using System.Windows.Forms;
 
 namespace Code4U.WinForm
 {
-    public class NodeCoordinate
-    {
-        public TreeNode ParentNode { get; set; }
-
-        public int Index { get; set; }
-    }
-
     public partial class FrmPrincipal : Form
     {
         private const string PROJECT_MODELS_NODE_TEXT = "Project Models";
 
-        private FrmDatabaseSchemaSettings frmDatabaseSchemaSettings;
+        private FrmGetModelFromDatabaseSchemaSettings frmGetFromDatabase;
+        private FrmGetModelFromAssemblySettings frmGetFromAssembly;
+
+        private readonly IMediator mediator;
+
+        private string filename;
 
         public ProjectViewModel Model { get; set; }
 
-        public FrmPrincipal(FrmDatabaseSchemaSettings frmDatabaseSchemaSettings)
+        public FrmPrincipal(FrmGetModelFromDatabaseSchemaSettings frmDatabaseSchemaSettings,
+                            FrmGetModelFromAssemblySettings frmGetFromAssembly,
+                            IMediator mediator)
         {
             InitializeComponent();
 
-            this.frmDatabaseSchemaSettings = frmDatabaseSchemaSettings;
+            this.frmGetFromDatabase = frmDatabaseSchemaSettings;
+            this.frmGetFromAssembly = frmGetFromAssembly;
+
+            this.mediator = mediator;
         }
 
         #region Handlers
-
-        private void menuLoadModelFromDatabase_Click(object sender, EventArgs e)
-        {
-            this.frmDatabaseSchemaSettings.ShowDialog(this);
-
-            this.Model = Mapper.Map<ProjectViewModel>(this.frmDatabaseSchemaSettings.Model);
-
-            LoadTreeView();
-        }
         
         private void trvProject_AfterSelect(object sender, TreeViewEventArgs e)
         {
@@ -60,29 +58,112 @@ namespace Code4U.WinForm
             SelectNode(nodesIndex);
         }
 
+        #region Menu
+
+        private void fromDatabaseToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.frmGetFromDatabase.ShowDialog(this);
+        }
+
+        private void openToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            openFileDialog.Filter = "JSON File|*.json";
+            openFileDialog.RestoreDirectory = true;
+
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                this.filename = openFileDialog.FileName;
+
+                var json = File.ReadAllText(this.filename);
+
+                this.Model = JsonConvert.DeserializeObject<ProjectViewModel>(json);
+
+                LoadTreeView();
+            }
+        }
+
+        private void saveToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrEmpty(this.filename))
+            {
+                SaveNewModelFile();
+            }
+            else
+            {
+                WriteModelToFile();
+            }
+        }
+
+        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
+
+        private void runToolStripButton_Click(object sender, EventArgs e)
+        {
+            if (this.Model != null)
+            {
+                this.mediator.Send(new RunTemplate()
+                {
+                    Model = Mapper.Map<Project>(this.Model)
+                });
+
+                MessageBox.Show("Code generated !");
+            }
+            else
+            {
+                MessageBox.Show("Import or Open a model first!");
+            }
+        }
+
+        private void newToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.filename = string.Empty;
+            this.Model = null;
+
+            LoadTreeView();
+        }
+
+        private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SaveNewModelFile();
+        }
+
+        #endregion Menu
+
         #endregion Handlers
 
         #region Methods
+
+        public virtual void SetModel(Project project)
+        {
+            this.Model = Mapper.Map<ProjectViewModel>(project);
+
+            LoadTreeView();
+        }
 
         protected virtual void LoadTreeView()
         {
             trvProject.Nodes.Clear();
 
-            var projectNode = trvProject.Nodes.Add(PROJECT_MODELS_NODE_TEXT);
-
-            foreach (var entity in this.Model.Entities)
+            if (this.Model != null)
             {
-                var entityNode = projectNode.Nodes.Add(entity.Name);
+                var projectNode = trvProject.Nodes.Add(PROJECT_MODELS_NODE_TEXT);
 
-                foreach (var property in entity.Properties)
+                foreach (var entity in this.Model.Entities)
                 {
-                    entityNode.Nodes.Add(property.Name);
+                    var entityNode = projectNode.Nodes.Add(entity.Name);
+
+                    foreach (var property in entity.Properties)
+                    {
+                        entityNode.Nodes.Add(property.Name);
+                    }
                 }
+
+                projectNode.ExpandAll();
+
+                trvProject.SelectedNode = projectNode;
             }
-
-            projectNode.ExpandAll();
-
-            trvProject.SelectedNode = projectNode;
         }
 
         protected virtual void ShowProperties()
@@ -142,6 +223,31 @@ namespace Code4U.WinForm
             return indexs;
         }
 
+        protected virtual void SaveNewModelFile()
+        {
+            saveFileDialog.Filter = "JSON File|*.json";
+            saveFileDialog.RestoreDirectory = true;
+
+            if (saveFileDialog.ShowDialog(this) == DialogResult.OK)
+            {
+                this.filename = saveFileDialog.FileName;
+
+                WriteModelToFile();
+            }
+        }
+
+        protected virtual void WriteModelToFile()
+        {
+            var json = JsonConvert.SerializeObject(this.Model, Formatting.Indented);
+
+            File.WriteAllText(this.filename, json);
+        }
+
         #endregion Methods
+
+        private void fromAssemblyToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.frmGetFromAssembly.ShowDialog(this);
+        }
     }
 }

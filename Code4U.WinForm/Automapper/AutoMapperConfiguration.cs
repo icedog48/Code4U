@@ -18,6 +18,10 @@ namespace AutoMapper
                 cfg.CreateMap<Property, PropertyViewModel>();
                 cfg.CreateMap<Entity, EntityViewModel>();
                 cfg.CreateMap<Project, ProjectViewModel>();
+
+                cfg.CreateMap<PropertyViewModel, Property>();
+                cfg.CreateMap<EntityViewModel, Entity>();
+                cfg.CreateMap<ProjectViewModel, Project>();
             });
         } 
     }

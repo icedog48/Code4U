@@ -11,17 +11,17 @@
 @inherits RazorEngine.Templating.Code4UTemplateBase<Project>
 
 @{ 
-    var filename = Path.Combine(ViewBag.TemplateFolder, @"Mappings\__NAME__Map.cs.cshtml");
+    var filename = Path.Combine(Model.TemplateFolder, @"Mappings\__NAME__Map.cs.cshtml");
 
     foreach (var entity in Model.Entities)
     {
         var generatedCode = Include(filename, entity, typeof(Entity)).ToString();
 
-        var generatedFileName = filename.Replace(ViewBag.TemplateFolder + "\\", string.Empty)
+        var generatedFileName = filename.Replace(Model.TemplateFolder + "\\", string.Empty)
                                         .Replace("__NAME__", entity.Name)
                                         .Replace(".cshtml", string.Empty);
 
-        generatedFileName = Path.Combine(ViewBag.GeneratedCodeFolder, generatedFileName);
+        generatedFileName = Path.Combine(Model.GeneratedCodeFolder, generatedFileName);
 
         FileSystemHelper.WriteFile(generatedFileName, generatedCode);
     }

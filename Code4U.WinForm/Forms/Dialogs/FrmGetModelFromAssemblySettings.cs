@@ -21,34 +21,34 @@ using Code4U.Models;
 
 namespace Code4U.WinForm
 {
-    public partial class FrmDatabaseSchemaSettings : Form
+    public partial class FrmGetModelFromAssemblySettings : Form
     {
         private readonly IMediator mediator;
 
         public Project Model { get; set; }
 
-        public FrmDatabaseSchemaSettings(IMediator mediator)
+        public FrmGetModelFromAssemblySettings(IMediator mediator)
         {
-            this.mediator = mediator;
-
             InitializeComponent();
             
-            txtServer.Text = @"localhost\SQLExpress";
-            txtDatabase.Text = "MangaScrapper";
-            txtUser.Text = @"sa";
-            txtPassword.Text = @"123456";
+            txtAssemblyFile.Text = @"C:\Projetos\Lucian\Code4U\Code4U\bin\Debug\Code4U.dll";
+            txtNamespace.Text = "Code4U.Models";
+
+            this.mediator = mediator;
         }
 
         private void btnGenerateCode_Click(object sender, EventArgs e)
         {
-            this.Model = mediator.Send(new GetModelFromDatabaseSchema()
+            this.Model = mediator.Send(new GetModelFromAssembly()
             {
                 ProjectName = "<Project Name>",
-                Server = txtServer.Text,
-                Database = txtDatabase.Text,
-                User = txtUser.Text,
-                Password = txtPassword.Text
+                AssemblyFilename = txtAssemblyFile.Text,
+                Namespace = txtNamespace.Text
             });
+
+            var frmPrincipal = (FrmPrincipal)this.Owner;
+
+            frmPrincipal.SetModel(this.Model);
 
             this.Close();
         }

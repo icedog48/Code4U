@@ -20,10 +20,6 @@ namespace Code4U.Commands
     {
         public string ProjectName { get; set; }
 
-        public string TemplateFolder { get; set; }
-
-        public string GeneratedCodeFolder { get; set; }
-
         public string Server { get; set; }
 
         public string Database { get; set; }
@@ -46,9 +42,7 @@ namespace Code4U.Commands
             var project = new Project()
             {
                 Name = message.ProjectName,
-                Entities = GetEntities(schema),
-                GeneratedCodeFolder = message.GeneratedCodeFolder,
-                TemplateFolder = message.TemplateFolder
+                Entities = GetEntities(schema)
             };
 
             return project;
@@ -88,18 +82,15 @@ namespace Code4U.Commands
 
                 property.Size = column.Length;
 
-                property.Identity = column.IsAutoNumber;
+                if (column.IsAutoNumber) property.Flags.Add("Identity");
 
-                property.IsPrimaryKey = column.IsPrimaryKey;
+                if (column.IsPrimaryKey) property.Flags.Add("PrimaryKey");
 
-                property.IsForeignKey = column.IsForeignKey;
+                if (column.IsForeignKey) property.Flags.Add("ForeignKey");
 
-                property.IsNullable = column.Nullable;
+                if (column.Nullable) property.Flags.Add("Nullable");
 
-                if (column.IsUniqueKey)
-                {
-                    property.UniqueKeyName = $"UQ_{column.TableName}_{column.Name}";
-                }
+                if (column.IsUniqueKey) property.Flags.Add("UniqueKey");
 
                 property.DefaultValue = column.DefaultValue;
 

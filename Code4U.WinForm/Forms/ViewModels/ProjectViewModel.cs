@@ -20,7 +20,7 @@ namespace Code4U.WinForm.Forms.ViewModels
         [Category(Program.BEHAVIOR_CATEGORY)]
         [DisplayName("Generated Code Folder")]
         public string GeneratedCodeFolder { get; set; }
-
+        
         [Browsable(false)]
         public IEnumerable<EntityViewModel> Entities { get; set; }
     }

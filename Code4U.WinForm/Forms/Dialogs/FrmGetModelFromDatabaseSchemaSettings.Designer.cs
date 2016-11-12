@@ -1,6 +1,6 @@
 ﻿namespace Code4U.WinForm
 {
-    partial class FrmDatabaseSchemaSettings
+    partial class FrmGetModelFromDatabaseSchemaSettings
     {
         /// <summary>
         /// Required designer variable.
@@ -133,15 +133,15 @@
             this.btnGenerateCode.UseVisualStyleBackColor = true;
             this.btnGenerateCode.Click += new System.EventHandler(this.btnGenerateCode_Click);
             // 
-            // FrmDatabaseSchemaSettings
+            // FrmGetModelFromDatabaseSchemaSettings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(383, 189);
+            this.ClientSize = new System.Drawing.Size(383, 188);
             this.Controls.Add(this.btnGenerateCode);
             this.Controls.Add(this.groupBox1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
-            this.Name = "FrmDatabaseSchemaSettings";
+            this.Name = "FrmGetModelFromDatabaseSchemaSettings";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Form1";
             this.groupBox1.ResumeLayout(false);

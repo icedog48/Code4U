@@ -6,15 +6,13 @@
 @using RazorEngine
 @using RazorEngine.Templating
 @using Code4U.Models
-@using DatabaseSchemaReader
-@using DatabaseSchemaReader.DataSchema
 
 @inherits RazorEngine.Templating.Code4UTemplateBase<Property>
 @{ 
     var columnName = Model.Name;
     var foreignKeyMethod = string.Empty;
 
-    if (Model.IsForeignKey)
+    if (Model.HasFlag("ForeignKey"))
     {
         columnName += "Id";
 
@@ -38,14 +36,14 @@
 
     var nullableMethod = ".NotNullable()";
 
-    if (Model.IsNullable)
+    if (Model.HasFlag("Nullable"))
     {
         nullableMethod = ".Nullable()";
     }
 
     var primaryKeyMethod = string.Empty;
 
-    if (Model.IsPrimaryKey)
+    if (Model.HasFlag("PrimaryKey"))
     {
         primaryKeyMethod = ".PrimaryKey()";
         nullableMethod = string.Empty;
@@ -53,16 +51,16 @@
 
     var identityMethod = string.Empty;
 
-    if (Model.Identity)
+    if (Model.HasFlag("Identity"))
     {
         identityMethod = ".Identity()";
     }
 
     var uniqueMethod = string.Empty;
 
-    if (!string.IsNullOrEmpty(Model.UniqueKeyName))
+    if (Model.HasFlag("UniqueKey"))
     {
-        uniqueMethod = ".Unique(\""+ Model.UniqueKeyName + "\")";
+        uniqueMethod = ".Unique()";
     }
 
     var defaultValueMethodMethod = string.Empty;

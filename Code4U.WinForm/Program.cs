@@ -49,7 +49,8 @@ namespace Code4U.WinForm
             });
 
             builder.RegisterType<FrmPrincipal>().AsSelf();
-            builder.RegisterType<FrmDatabaseSchemaSettings>().AsSelf();
+            builder.RegisterType<FrmGetModelFromDatabaseSchemaSettings>().AsSelf();
+            builder.RegisterType<FrmGetModelFromAssemblySettings>().AsSelf();
 
             AutoMapperConfiguration.SetUp();
 

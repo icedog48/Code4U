@@ -11,15 +11,15 @@
 @inherits RazorEngine.Templating.Code4UTemplateBase<Project>
 
 @{ 
-    var filename = Path.Combine(ViewBag.TemplateFolder, @"Migrations\_Migrations.cs.cshtml");
+    var filename = Path.Combine(Model.TemplateFolder, @"Migrations\_Migrations.cs.cshtml");
 
     var generatedCode = Include(filename, Model, typeof(Project)).ToString();
 
-    var generatedFileName = filename.Replace(ViewBag.TemplateFolder + "\\", string.Empty)
+    var generatedFileName = filename.Replace(Model.TemplateFolder + "\\", string.Empty)
                                     .Replace("_Migrations", Model.Name + "Migrations")
                                     .Replace(".cshtml", string.Empty);
 
-    generatedFileName = Path.Combine(ViewBag.GeneratedCodeFolder, generatedFileName);
+    generatedFileName = Path.Combine(Model.GeneratedCodeFolder, generatedFileName);
 
     FileSystemHelper.WriteFile(generatedFileName, generatedCode);
 }

@@ -9,13 +9,17 @@
 
 @inherits RazorEngine.Templating.Code4UTemplateBase<Property>
 
-@if (Model.IsPrimaryKey)
+@if (Model.HasFlag("PrimaryKey"))
 {
 @:Id(x => x.@Model.Name);
 }
-else if (Model.IsForeignKey)
+else if (Model.HasFlag("ForeignKey"))
 {
 @:References(x => x.@Model.Name);
+}
+else if (Model.HasFlag("Collection"))
+{
+@:HasMany(x => x.@Model.Name);
 }
 else
 {
