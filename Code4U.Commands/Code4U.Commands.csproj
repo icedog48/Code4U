@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{C453EACE-93C5-44F1-B219-EEED8D11A3B5}</ProjectGuid>
+    <ProjectGuid>{CCAD5D41-E2EC-4C13-8AA6-427D63E6FBD5}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Code4U</RootNamespace>
-    <AssemblyName>Code4U</AssemblyName>
+    <RootNamespace>Code4U.Commands</RootNamespace>
+    <AssemblyName>Code4U.Commands</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -56,12 +56,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Helpers\FileSystemHelper.cs" />
-    <Compile Include="Models\Entity.cs" />
-    <Compile Include="Models\Project.cs" />
-    <Compile Include="Models\Property.cs" />
+    <Compile Include="Extensions\TypeExtensions.cs" />
+    <Compile Include="GetModelFromAssembly.cs" />
+    <Compile Include="GetModelFromDatabaseSchema.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RazorEngine\Code4UTemplateBase.cs" />
+    <Compile Include="RunTemplate.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Code4U\Code4U.csproj">
+      <Project>{c453eace-93c5-44f1-b219-eeed8d11a3b5}</Project>
+      <Name>Code4U</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

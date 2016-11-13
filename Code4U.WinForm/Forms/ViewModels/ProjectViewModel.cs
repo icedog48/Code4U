@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Code4U.WinForm.Forms.ViewModels.TypeEditors;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -15,10 +16,12 @@ namespace Code4U.WinForm.Forms.ViewModels
 
         [Category(Program.BEHAVIOR_CATEGORY)]
         [DisplayName("Template Folder")]
+        [Editor(typeof(FileSelectorTypeEditor), typeof(System.Drawing.Design.UITypeEditor))]
         public string TemplateFolder { get; set; }
 
         [Category(Program.BEHAVIOR_CATEGORY)]
         [DisplayName("Generated Code Folder")]
+        [Editor(typeof(FileSelectorTypeEditor), typeof(System.Drawing.Design.UITypeEditor))]
         public string GeneratedCodeFolder { get; set; }
         
         [Browsable(false)]

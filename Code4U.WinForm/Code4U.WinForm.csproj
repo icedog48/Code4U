@@ -59,6 +59,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Design" />
     <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.Razor.3.0.0\lib\net45\System.Web.Razor.dll</HintPath>
       <Private>True</Private>
@@ -94,6 +95,7 @@
       <DependentUpon>FrmPrincipal.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\ViewModels\Converters\StringListConverter.cs" />
+    <Compile Include="Forms\ViewModels\Editors\FileSelectorTypeEditor.cs" />
     <Compile Include="Forms\ViewModels\EntityViewModel.cs" />
     <Compile Include="Forms\ViewModels\ProjectViewModel.cs" />
     <Compile Include="Forms\ViewModels\PropertyViewModel.cs" />
@@ -128,22 +130,15 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <None Include="Templates\Index.cshtml" />
-    <None Include="Templates\Mappings\Index.cshtml" />
-    <None Include="Templates\Mappings\_PropertyMap.cshtml" />
-    <None Include="Templates\Mappings\__NAME__Map.cs.cshtml" />
-    <None Include="Templates\Migrations\Index.cshtml" />
-    <None Include="Templates\Migrations\_CreateColumn.cshtml" />
-    <None Include="Templates\Migrations\_CreateTable.cshtml" />
-    <None Include="Templates\Migrations\_Migrations.cs.cshtml" />
-    <None Include="Templates\Models\Index.cshtml" />
-    <None Include="Templates\Models\_Property.cshtml" />
-    <None Include="Templates\Models\__NAME__.cs.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Code4U.Commands\Code4U.Commands.csproj">
+      <Project>{ccad5d41-e2ec-4c13-8aa6-427d63e6fbd5}</Project>
+      <Name>Code4U.Commands</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Code4U\Code4U.csproj">
       <Project>{c453eace-93c5-44f1-b219-eeed8d11a3b5}</Project>
       <Name>Code4U</Name>
