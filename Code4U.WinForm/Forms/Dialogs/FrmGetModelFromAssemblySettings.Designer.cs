@@ -88,9 +88,11 @@
             this.Controls.Add(this.label2);
             this.Controls.Add(this.btnGenerateCode);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "FrmGetModelFromAssemblySettings";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "Form1";
+            this.Text = "Assembly Settings";
             this.ResumeLayout(false);
             this.PerformLayout();
 

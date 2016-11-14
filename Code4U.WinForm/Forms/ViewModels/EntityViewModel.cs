@@ -10,6 +10,11 @@ namespace Code4U.WinForm.Forms.ViewModels
 {
     public class EntityViewModel
     {
+        public EntityViewModel()
+        {
+            this.Properties = new List<PropertyViewModel>();
+        }
+
         [Category(Program.GENERAL_CATEGORY)]
         [DisplayName("Name")]
         public string Name { get; set; }

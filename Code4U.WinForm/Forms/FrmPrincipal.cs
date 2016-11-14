@@ -21,6 +21,13 @@ namespace Code4U.WinForm
     {
         private const string PROJECT_MODELS_NODE_TEXT = "Project Models";
 
+        private enum Levels
+        {
+            Project = 0,
+            Entity = 1,
+            Property = 2
+        }
+
         private FrmGetModelFromDatabaseSchemaSettings frmGetFromDatabase;
         private FrmGetModelFromAssemblySettings frmGetFromAssembly;
 
@@ -68,16 +75,12 @@ namespace Code4U.WinForm
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
         {
             OpenProject();
-        }
-
-        
+        }        
 
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
         {
             SaveProject();
-        }
-
-       
+        }       
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -125,12 +128,107 @@ namespace Code4U.WinForm
 
         private void addToolStripButton_Click(object sender, EventArgs e)
         {
+            if (trvProject.SelectedNode != null)
+            {
+                var selectedNode = trvProject.SelectedNode;
 
+                var level = (Levels)trvProject.SelectedNode.Level;
+
+                if (level == Levels.Project)
+                {
+                    var entities = this.Model.Entities.ToList();
+
+                    entities.Add(new EntityViewModel()
+                    {
+                        Name = "New entity"
+                    });
+
+                    this.Model.Entities = entities;
+
+                    LoadTreeView();
+
+                    trvProject.SelectedNode = trvProject.SelectedNode.LastNode;
+                }
+                else 
+                {
+                    var nodesIndex = GetNodesIndex(trvProject.SelectedNode);
+                    
+                    var entityName = trvProject.SelectedNode.Text;
+
+                    if (level == Levels.Property)
+                    {
+                        entityName = trvProject.SelectedNode.Parent.Text;
+                    }
+
+                    var entity = this.Model.Entities.Last(x => x.Name == entityName);
+
+                    var properties = entity.Properties.ToList();
+
+                    properties.Add(new PropertyViewModel()
+                    {
+                        Name = "New Property"
+                    });
+
+                    entity.Properties = properties;
+
+                    LoadTreeView();
+
+                    SelectNode(nodesIndex);
+
+                    if (level == Levels.Property)
+                    {
+                        trvProject.SelectedNode = trvProject.SelectedNode.Parent.LastNode;
+                    }
+                    else
+                    {
+                        trvProject.SelectedNode = trvProject.SelectedNode.LastNode;
+                    }
+                }
+            }
         }
 
         private void removeToolStripButton_Click(object sender, EventArgs e)
         {
+            if (trvProject.SelectedNode != null)
+            {
+                var nodesIndex = GetNodesIndex(trvProject.SelectedNode).ToList();
 
+                var level = (Levels)trvProject.SelectedNode.Level;
+
+                if (level == Levels.Entity)
+                {
+                    var entityName = trvProject.SelectedNode.Text;
+
+                    var entity = this.Model.Entities.Last(x => x.Name == entityName);
+
+                    var entities = this.Model.Entities.ToList();
+
+                    entities.Remove(entity);
+
+                    this.Model.Entities = entities;
+
+                    LoadTreeView();
+                }
+                else if (level == Levels.Property)
+                {
+                    var entityName = trvProject.SelectedNode.Parent.Text;
+                    var entity = this.Model.Entities.Last(x => x.Name == entityName);
+
+                    var propertyName = trvProject.SelectedNode.Text;
+                    var property = entity.Properties.Last(x => x.Name == propertyName);
+
+                    var properties = entity.Properties.ToList();
+                    properties.Remove(property);
+
+                    entity.Properties = properties;
+
+                    LoadTreeView();
+                    
+                    nodesIndex.RemoveAt(nodesIndex.Count - 1);
+
+                    SelectNode(nodesIndex);
+                }
+            }
         }
 
         #endregion Toolbar
