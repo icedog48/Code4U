@@ -67,32 +67,17 @@ namespace Code4U.WinForm
 
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            openFileDialog.Filter = "JSON File|*.json";
-            openFileDialog.RestoreDirectory = true;
-
-            if (openFileDialog.ShowDialog() == DialogResult.OK)
-            {
-                this.filename = openFileDialog.FileName;
-
-                var json = File.ReadAllText(this.filename);
-
-                this.Model = JsonConvert.DeserializeObject<ProjectViewModel>(json);
-
-                LoadTreeView();
-            }
+            OpenProject();
         }
+
+        
 
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrEmpty(this.filename))
-            {
-                SaveNewModelFile();
-            }
-            else
-            {
-                WriteModelToFile();
-            }
+            SaveProject();
         }
+
+       
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -101,35 +86,54 @@ namespace Code4U.WinForm
 
         private void runToolStripButton_Click(object sender, EventArgs e)
         {
-            if (this.Model != null)
-            {
-                this.mediator.Send(new RunTemplate()
-                {
-                    Model = Mapper.Map<Project>(this.Model)
-                });
-
-                MessageBox.Show("Code generated !");
-            }
-            else
-            {
-                MessageBox.Show("Import or Open a model first!");
-            }
-        }
+            RunTransformations();
+        }        
 
         private void newToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            this.filename = string.Empty;
-            this.Model = null;
-
-            LoadTreeView();
-        }
+            NewProject();
+        }        
 
         private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             SaveNewModelFile();
         }
 
+        private void fromAssemblyToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.frmGetFromAssembly.ShowDialog(this);
+        }
+
         #endregion Menu
+
+        #region Toolbar
+
+        private void newToolStripButton_Click(object sender, EventArgs e)
+        {
+            NewProject();
+        }
+
+        private void openToolStripButton_Click(object sender, EventArgs e)
+        {
+            OpenProject();
+        }
+
+        private void saveToolStripButton_Click(object sender, EventArgs e)
+        {
+            SaveProject();
+        }
+
+        private void addToolStripButton_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void removeToolStripButton_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        #endregion Toolbar
 
         #endregion Handlers
 
@@ -243,11 +247,68 @@ namespace Code4U.WinForm
             File.WriteAllText(this.filename, json);
         }
 
-        #endregion Methods
-
-        private void fromAssemblyToolStripMenuItem_Click(object sender, EventArgs e)
+        protected virtual void OpenProject()
         {
-            this.frmGetFromAssembly.ShowDialog(this);
+            openFileDialog.Filter = "JSON File|*.json";
+            openFileDialog.RestoreDirectory = true;
+
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                this.filename = openFileDialog.FileName;
+
+                var json = File.ReadAllText(this.filename);
+
+                this.Model = JsonConvert.DeserializeObject<ProjectViewModel>(json);
+
+                LoadTreeView();
+            }
         }
+
+        protected virtual void SaveProject()
+        {
+            if (string.IsNullOrEmpty(this.filename))
+            {
+                SaveNewModelFile();
+            }
+            else
+            {
+                WriteModelToFile();
+            }
+        }
+
+        protected virtual void RunTransformations()
+        {
+            if (this.Model != null)
+            {
+                try
+                {
+                    this.mediator.Send(new RunTemplate()
+                    {
+                        Model = Mapper.Map<Project>(this.Model)
+                    });
+
+                    MessageBox.Show("Code generated !");
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            }
+            else
+            {
+                MessageBox.Show("Import or Open a model first!");
+            }
+        }
+
+        protected virtual void NewProject()
+        {
+            this.filename = string.Empty;
+            this.Model = null;
+            this.ptgProperties.SelectedObject = null;
+
+            LoadTreeView();
+        }
+
+        #endregion Methods
     }
 }

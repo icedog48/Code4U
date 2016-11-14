@@ -11,6 +11,8 @@ namespace Code4U.Helpers
     {
         public static string[] GetDirectories(string baseDir)
         {
+            if (string.IsNullOrEmpty(baseDir)) throw new InvalidOperationException("The directory cannot be empty.");
+
             var directories = new List<string>();
 
             directories.Add(baseDir);

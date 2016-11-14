@@ -25,7 +25,18 @@ namespace Code4U.Commands
     {
         public string Handle(RunTemplate message)
         {
-            ConfigureRazorEngine(FileSystemHelper.GetDirectories(message.Model.TemplateFolder));            
+            string[] templateFolders = null;
+
+            try
+            {
+                templateFolders = FileSystemHelper.GetDirectories(message.Model.TemplateFolder);
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidOperationException("Template folder cannot be empty.", ex);
+            }
+
+            ConfigureRazorEngine(templateFolders);
 
             var templateFileName = Path.Combine(message.Model.TemplateFolder, "Index.cshtml");
 
