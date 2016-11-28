@@ -1,13 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Code4U.WinForm", "Code4U.WinForm\Code4U.WinForm.csproj", "{0EF4A0B3-AFC7-47A8-9767-1E858430690E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Code4U", "Code4U\Code4U.csproj", "{C453EACE-93C5-44F1-B219-EEED8D11A3B5}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Code4U.Templates", "Code4U.Templates\Code4U.Templates.csproj", "{500620D5-C84D-4E6D-BB4A-B1EAECEE7BFB}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Code4U.Commands", "Code4U.Commands\Code4U.Commands.csproj", "{CCAD5D41-E2EC-4C13-8AA6-427D63E6FBD5}"
 EndProject
@@ -25,10 +23,6 @@ Global
 		{C453EACE-93C5-44F1-B219-EEED8D11A3B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C453EACE-93C5-44F1-B219-EEED8D11A3B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C453EACE-93C5-44F1-B219-EEED8D11A3B5}.Release|Any CPU.Build.0 = Release|Any CPU
-		{500620D5-C84D-4E6D-BB4A-B1EAECEE7BFB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{500620D5-C84D-4E6D-BB4A-B1EAECEE7BFB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{500620D5-C84D-4E6D-BB4A-B1EAECEE7BFB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{500620D5-C84D-4E6D-BB4A-B1EAECEE7BFB}.Release|Any CPU.Build.0 = Release|Any CPU
 		{CCAD5D41-E2EC-4C13-8AA6-427D63E6FBD5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{CCAD5D41-E2EC-4C13-8AA6-427D63E6FBD5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CCAD5D41-E2EC-4C13-8AA6-427D63E6FBD5}.Release|Any CPU.ActiveCfg = Release|Any CPU
