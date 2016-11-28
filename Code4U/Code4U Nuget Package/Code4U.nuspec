@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>Code4U</id>
+    <version>1.0.0-alpha</version>
+    <title>Code4U</title>
+    <authors>Icedog48</authors>
+    <owners>Icedog48</owners>    
+    <projectUrl>https://github.com/icedog48/Code4U</projectUrl>    
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>A lib containing class models to run into razor templates</description>
+    <releaseNotes>None</releaseNotes>
+    <copyright>Copyright 2016</copyright>
+    <tags>Code4U</tags>
+    <dependencies >      
+      <dependency id="Microsoft.AspNet.Razor" version="3.0.0" />
+      <dependency id="RazorEngine" version="3.9.1" />
+    </dependencies>
+  </metadata>
+</package>
