@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DatabaseSchemaReader.DataSchema;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,9 +9,27 @@ namespace Code4U.Models
 {
     public class Entity
     {
+        private IList<Property> properties = new List<Property>();
+
+        public Entity() { }
+
         public string Name { get; set; }
 
-        public IEnumerable<Property> Properties { get; set; }
+        public IEnumerable<Property> Properties 
+        {
+            get { return properties; }
+            set
+            {
+                var propertyList = value.ToList();
+
+                foreach (var property in propertyList)
+                {
+                    property.Entity = this;
+                }
+
+                properties = propertyList;
+            }
+        }
 
         public bool IsLastProperty(Property property)
         {
@@ -18,5 +37,7 @@ namespace Code4U.Models
 
             return property == lastProperty;
         }
+
+        public Project Project { get; set; }
     }
 }

@@ -77,6 +77,8 @@ namespace Code4U.Commands
                 property.Name = column.Name;
                 if (column.IsForeignKey) property.Name = column.ForeignKeyTableName;
 
+                property.Label = property.Name;
+
                 property.Type = column.DataType.NetDataTypeCSharpName;
                 if (column.IsForeignKey) property.Type = column.ForeignKeyTableName;
 

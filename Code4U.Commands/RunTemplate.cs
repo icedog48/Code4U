@@ -4,6 +4,7 @@ using DatabaseSchemaReader;
 using DatabaseSchemaReader.DataSchema;
 using MediatR;
 using RazorEngine;
+using RazorEngine.Compilation.ReferenceResolver;
 using RazorEngine.Configuration;
 using RazorEngine.Templating;
 using RazorEngine.Text;
@@ -50,7 +51,8 @@ namespace Code4U.Commands
                 Debug = true,
                 Language = Language.CSharp,
                 TemplateManager = new ResolvePathTemplateManager(templateFolders),
-                EncodedStringFactory = new RawStringFactory()
+                EncodedStringFactory = new RawStringFactory(),
+                ReferenceResolver = new Code4UReferenceResolver(templateFolders.First())
             };
 
             var service = RazorEngineService.Create(config);

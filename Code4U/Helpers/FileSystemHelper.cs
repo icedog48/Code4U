@@ -25,6 +25,20 @@ namespace Code4U.Helpers
             return directories.ToArray();
         }
 
+        public static string[] GetFiles(string baseDirectory, string pattern)
+        {
+            var files = new List<string>();
+
+            files.AddRange(Directory.GetFiles(baseDirectory, pattern));
+
+            foreach (string directory in Directory.GetDirectories(baseDirectory))
+            {
+                files.AddRange(GetFiles(directory, pattern));
+            }
+
+            return files.ToArray();
+        }
+
         public static void WriteFile(string filename, string fileContent)
         {
             var directory = Path.GetDirectoryName(filename);

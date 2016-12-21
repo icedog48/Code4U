@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DatabaseSchemaReader.DataSchema;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -29,5 +30,7 @@ namespace Code4U.Models
         {
             return this.Flags.Any(x => x.ToLower().Trim() == flag.ToLower().Trim());
         }
+
+        public Entity Entity { get; set; }
     }
 }

@@ -21,7 +21,7 @@ namespace Code4U.WinForm
     {
         private const string PROJECT_MODELS_NODE_TEXT = "Project Models";
 
-        private enum Levels
+        protected enum Levels
         {
             Project = 0,
             Entity = 1,
@@ -35,7 +35,7 @@ namespace Code4U.WinForm
 
         private string filename;
 
-        public ProjectViewModel Model { get; set; }
+        public ProjectViewModel Project { get; set; }
 
         public FrmPrincipal(FrmGetModelFromDatabaseSchemaSettings frmDatabaseSchemaSettings,
                             FrmGetModelFromAssemblySettings frmGetFromAssembly,
@@ -104,6 +104,12 @@ namespace Code4U.WinForm
 
         private void fromAssemblyToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            if (this.Project != null && this.Project.FromAssembly != null)
+            {
+                this.frmGetFromAssembly.AssemblyFile = Project.FromAssembly.AssemblyFilename;
+                this.frmGetFromAssembly.Namespace    = Project.FromAssembly.Namespace;
+            }
+            
             this.frmGetFromAssembly.ShowDialog(this);
         }
 
@@ -136,14 +142,14 @@ namespace Code4U.WinForm
 
                 if (level == Levels.Project)
                 {
-                    var entities = this.Model.Entities.ToList();
+                    var entities = this.Project.Entities.ToList();
 
                     entities.Add(new EntityViewModel()
                     {
                         Name = "New entity"
                     });
 
-                    this.Model.Entities = entities;
+                    this.Project.Entities = entities;
 
                     LoadTreeView();
 
@@ -160,7 +166,7 @@ namespace Code4U.WinForm
                         entityName = trvProject.SelectedNode.Parent.Text;
                     }
 
-                    var entity = this.Model.Entities.Last(x => x.Name == entityName);
+                    var entity = this.Project.Entities.Last(x => x.Name == entityName);
 
                     var properties = entity.Properties.ToList();
 
@@ -199,20 +205,20 @@ namespace Code4U.WinForm
                 {
                     var entityName = trvProject.SelectedNode.Text;
 
-                    var entity = this.Model.Entities.Last(x => x.Name == entityName);
+                    var entity = this.Project.Entities.Last(x => x.Name == entityName);
 
-                    var entities = this.Model.Entities.ToList();
+                    var entities = this.Project.Entities.ToList();
 
                     entities.Remove(entity);
 
-                    this.Model.Entities = entities;
+                    this.Project.Entities = entities;
 
                     LoadTreeView();
                 }
                 else if (level == Levels.Property)
                 {
                     var entityName = trvProject.SelectedNode.Parent.Text;
-                    var entity = this.Model.Entities.Last(x => x.Name == entityName);
+                    var entity = this.Project.Entities.Last(x => x.Name == entityName);
 
                     var propertyName = trvProject.SelectedNode.Text;
                     var property = entity.Properties.Last(x => x.Name == propertyName);
@@ -237,22 +243,44 @@ namespace Code4U.WinForm
 
         #region Methods
 
-        public virtual void SetModel(Project project)
+        public virtual void SetModel(Project project, GetFromAssemblyViewModel getFromViewModel)
         {
-            this.Model = Mapper.Map<ProjectViewModel>(project);
+            this.Project = Mapper.Map<ProjectViewModel>(project);
+
+            this.Project.FromAssembly = getFromViewModel;
+
+            LoadTreeView();
+        }
+
+        public virtual void SetModel(Project project, GetFromDatabaseViewModel getFromViewModel)
+        {
+            this.Project = Mapper.Map<ProjectViewModel>(project);
+
+            this.Project.FromDatabase = getFromViewModel;
 
             LoadTreeView();
         }
 
         protected virtual void LoadTreeView()
         {
+            var entityNodesExpanded = new List<NodeStateViewModel>();
+
+            if (trvProject.TopNode != null)
+            {
+                entityNodesExpanded = trvProject.TopNode.Nodes.Cast<TreeNode>().Select(x => new NodeStateViewModel()
+                {
+                    Text = x.Text,
+                    Expanded = x.IsExpanded
+                }).ToList();
+            }
+
             trvProject.Nodes.Clear();
 
-            if (this.Model != null)
-            {
-                var projectNode = trvProject.Nodes.Add(PROJECT_MODELS_NODE_TEXT);
+            var projectNode = trvProject.Nodes.Add(PROJECT_MODELS_NODE_TEXT);
 
-                foreach (var entity in this.Model.Entities)
+            if (this.Project != null)
+            {
+                foreach (var entity in this.Project.Entities)
                 {
                     var entityNode = projectNode.Nodes.Add(entity.Name);
 
@@ -260,11 +288,14 @@ namespace Code4U.WinForm
                     {
                         entityNode.Nodes.Add(property.Name);
                     }
+
+                    var nodeState = entityNodesExpanded.FirstOrDefault(x => x.Text == entity.Name);
+
+                    if (nodeState != null && nodeState.Expanded) entityNode.Expand();
                 }
 
-                projectNode.ExpandAll();
-
                 trvProject.SelectedNode = projectNode;
+                trvProject.SelectedNode.Expand();
             }
         }
 
@@ -272,11 +303,11 @@ namespace Code4U.WinForm
         {
             if (trvProject.SelectedNode.Level == 0)
             {
-                ptgProperties.SelectedObject = this.Model;
+                ptgProperties.SelectedObject = this.Project;
             }
             else if (trvProject.SelectedNode.Level == 1)
             {
-                var entity = this.Model.Entities.First(x => x.Name == trvProject.SelectedNode.Text);
+                var entity = this.Project.Entities.First(x => x.Name == trvProject.SelectedNode.Text);
 
                 ptgProperties.SelectedObject = entity;
             }
@@ -285,7 +316,7 @@ namespace Code4U.WinForm
                 var entityName = trvProject.SelectedNode.Parent.Text;
                 var propertyName = trvProject.SelectedNode.Text;
 
-                var property = this.Model.Entities.First(x => x.Name == entityName)
+                var property = this.Project.Entities.First(x => x.Name == entityName)
                                             .Properties.First(x => x.Name == propertyName);
 
                 ptgProperties.SelectedObject = property;
@@ -311,6 +342,27 @@ namespace Code4U.WinForm
             trvProject.SelectedNode = node;
         }
 
+        protected virtual TreeNode GetNodeByText(string nodeText, Levels nodeLevel = Levels.Project, TreeNode node = null)
+        {
+            if (node == null) node = trvProject.TopNode;
+
+            if (node.Text == nodeText && 
+                node.Level == (int)nodeLevel) return node;
+
+            TreeNode childNode = null;
+            
+            foreach (TreeNode currentNode in node.Nodes)
+            {
+                childNode = GetNodeByText(nodeText, nodeLevel, currentNode);
+
+                if (childNode != null && 
+                    childNode.Text == nodeText && 
+                    childNode.Level == (int)nodeLevel) return childNode;
+            }
+
+            return childNode;
+        }
+
         protected virtual IEnumerable<int> GetNodesIndex(TreeNode node)
         {
             var indexs = new List<int>();
@@ -327,7 +379,7 @@ namespace Code4U.WinForm
 
         protected virtual void SaveNewModelFile()
         {
-            saveFileDialog.Filter = "JSON File|*.json";
+            saveFileDialog.Filter = "Code4U Project|*.4u";
             saveFileDialog.RestoreDirectory = true;
 
             if (saveFileDialog.ShowDialog(this) == DialogResult.OK)
@@ -340,14 +392,14 @@ namespace Code4U.WinForm
 
         protected virtual void WriteModelToFile()
         {
-            var json = JsonConvert.SerializeObject(this.Model, Formatting.Indented);
+            var json = JsonConvert.SerializeObject(this.Project, Formatting.Indented);
 
             File.WriteAllText(this.filename, json);
         }
 
         protected virtual void OpenProject()
         {
-            openFileDialog.Filter = "JSON File|*.json";
+            openFileDialog.Filter = "Code4U Project|*.4u";
             openFileDialog.RestoreDirectory = true;
 
             if (openFileDialog.ShowDialog() == DialogResult.OK)
@@ -356,7 +408,9 @@ namespace Code4U.WinForm
 
                 var json = File.ReadAllText(this.filename);
 
-                this.Model = JsonConvert.DeserializeObject<ProjectViewModel>(json);
+                this.Project = JsonConvert.DeserializeObject<ProjectViewModel>(json);
+
+                if (this.Project.Entities == null) this.Project.Entities = new List<EntityViewModel>();
 
                 LoadTreeView();
             }
@@ -376,13 +430,13 @@ namespace Code4U.WinForm
 
         protected virtual void RunTransformations()
         {
-            if (this.Model != null)
+            if (this.Project != null)
             {
                 try
                 {
                     this.mediator.Send(new RunTemplate()
                     {
-                        Model = Mapper.Map<Project>(this.Model)
+                        Model = Mapper.Map<Project>(this.Project)
                     });
 
                     MessageBox.Show("Code generated !");
@@ -401,12 +455,72 @@ namespace Code4U.WinForm
         protected virtual void NewProject()
         {
             this.filename = string.Empty;
-            this.Model = null;
+            this.Project = null;
             this.ptgProperties.SelectedObject = null;
 
             LoadTreeView();
         }
 
         #endregion Methods
+
+        private void toolStripButtonUp_Click(object sender, EventArgs e)
+        {
+            if (trvProject.SelectedNode == null) return;
+
+            var level = (Levels)trvProject.SelectedNode.Level;
+
+            if (level != Levels.Entity) return;
+
+            var entities = this.Project.Entities.ToList();
+
+            var entityName = trvProject.SelectedNode.Text;
+
+            var entity = entities.Last(x => x.Name == entityName);
+
+            var entityIndex = entities.IndexOf(entity);
+
+            if (entityIndex == 0) return;
+
+            entities.Remove(entity);
+            entities.Insert(entityIndex - 1, entity);
+
+            this.Project.Entities = entities;
+
+            LoadTreeView();
+
+            var node = GetNodeByText(entity.Name, Levels.Entity);
+
+            SelectNode(GetNodesIndex(node));
+        }
+
+        private void toolStripButtonDown_Click(object sender, EventArgs e)
+        {
+            if (trvProject.SelectedNode == null) return;
+
+            var level = (Levels)trvProject.SelectedNode.Level;
+
+            if (level != Levels.Entity) return;
+
+            var entities = this.Project.Entities.ToList();
+
+            var entityName = trvProject.SelectedNode.Text;
+
+            var entity = entities.Last(x => x.Name == entityName);
+
+            var entityIndex = entities.IndexOf(entity);
+
+            if (entityIndex == entities.Count - 1) return;
+
+            entities.Remove(entity);
+            entities.Insert(entityIndex + 1, entity);
+
+            this.Project.Entities = entities;
+
+            LoadTreeView();
+
+            var node = GetNodeByText(entity.Name, Levels.Entity);
+
+            SelectNode(GetNodesIndex(node));
+        }
     }
 }

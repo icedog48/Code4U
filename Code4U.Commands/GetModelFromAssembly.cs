@@ -34,7 +34,7 @@ namespace Code4U.Commands
         {
             var assembly = Assembly.LoadFrom(message.AssemblyFilename);
 
-            var assemblyTypes = assembly.GetExportedTypes().Where(x => x.Namespace == message.Namespace).Select(x => x.GetTypeInfo()).ToList();
+            var assemblyTypes = assembly.GetExportedTypes().Where(x => x.Namespace == message.Namespace && !x.IsAbstract).Select(x => x.GetTypeInfo()).ToList();
 
             var project = new Project()
             {
@@ -67,13 +67,27 @@ namespace Code4U.Commands
         {
             var properties = new List<Property>();
 
-            var typeProperties = type.DeclaredProperties;
+            var typeProperties = new List<PropertyInfo>();
+
+            if (type.BaseType != null)
+            {
+                typeProperties.AddRange(type.BaseType.GetProperties(BindingFlags.FlattenHierarchy | BindingFlags.Instance| BindingFlags.Public));
+            }
+
+            typeProperties.AddRange(type.DeclaredProperties);
 
             foreach (var typeProperty in typeProperties)
             {
                 var property = new Property();
 
                 property.Name = typeProperty.Name;
+                property.Label = property.Name;
+
+                if (property.Name == "Id")
+                {
+                    property.Flags.Add("PrimaryKey");
+                    property.Flags.Add("Identity");
+                }
 
                 var propertyType = typeProperty.PropertyType;
                 

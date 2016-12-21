@@ -18,6 +18,7 @@ using Code4U.Helpers;
 using MediatR;
 using Code4U.Commands;
 using Code4U.Models;
+using Code4U.WinForm.Forms.ViewModels;
 
 namespace Code4U.WinForm
 {
@@ -27,12 +28,33 @@ namespace Code4U.WinForm
 
         public Project Model { get; set; }
 
+        public string AssemblyFile
+        {
+            get
+            {
+                return txtAssemblyFile.Text;
+            }
+            set
+            {
+                txtAssemblyFile.Text = value;
+            }
+        }
+
+        public string Namespace
+        {
+            get
+            {
+                return txtNamespace.Text;
+            }
+            set
+            {
+                txtNamespace.Text = value;
+            }
+        }
+
         public FrmGetModelFromAssemblySettings(IMediator mediator)
         {
             InitializeComponent();
-            
-            txtAssemblyFile.Text = @"C:\Projetos\Lucian\Code4U\Code4U\bin\Debug\Code4U.dll";
-            txtNamespace.Text = "Code4U.Models";
 
             this.mediator = mediator;
         }
@@ -48,7 +70,18 @@ namespace Code4U.WinForm
 
             var frmPrincipal = (FrmPrincipal)this.Owner;
 
-            frmPrincipal.SetModel(this.Model);
+            if (frmPrincipal.Project != null)
+            {
+                this.Model.Name = frmPrincipal.Project.Name;
+                this.Model.TemplateFolder = frmPrincipal.Project.TemplateFolder;
+                this.Model.GeneratedCodeFolder = frmPrincipal.Project.GeneratedCodeFolder;
+            }
+
+            frmPrincipal.SetModel(this.Model, new GetFromAssemblyViewModel()
+            {
+                AssemblyFilename = txtAssemblyFile.Text,
+                Namespace = txtNamespace.Text
+            });
 
             this.Close();
         }

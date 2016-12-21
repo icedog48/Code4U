@@ -18,6 +18,7 @@ using Code4U.Helpers;
 using MediatR;
 using Code4U.Commands;
 using Code4U.Models;
+using Code4U.WinForm.Forms.ViewModels;
 
 namespace Code4U.WinForm
 {
@@ -52,7 +53,13 @@ namespace Code4U.WinForm
 
             var frmPrincipal = (FrmPrincipal)this.Owner;
 
-            frmPrincipal.SetModel(this.Model);
+            frmPrincipal.SetModel(this.Model, new GetFromDatabaseViewModel()
+            {
+                Server = txtServer.Text,
+                Database = txtDatabase.Text,
+                User = txtUser.Text,
+                Password = txtPassword.Text
+            });
 
             this.Close();
         }
