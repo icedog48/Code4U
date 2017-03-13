@@ -18,6 +18,10 @@ namespace RazorEngine.Compilation.ReferenceResolver
         public Code4UReferenceResolver(string directory)
         {
             this.directory = directory;
+
+            this.directory = Path.Combine(this.directory, @"..\");
+
+            this.directory = Path.GetFullPath(this.directory);
         }
 
         public string FindLoaded(IEnumerable<string> refs, string find)

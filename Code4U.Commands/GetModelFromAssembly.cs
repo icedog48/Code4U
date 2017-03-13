@@ -118,6 +118,11 @@ namespace Code4U.Commands
                     property.Flags.Add("ForeignKey");
                 }
 
+                if (typeProperty.DeclaringType.Name != type.Name)
+                {
+                    property.Flags.Add("Inherited");
+                }
+
                 properties.Add(property);
             }
 
